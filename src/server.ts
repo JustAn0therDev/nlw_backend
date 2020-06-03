@@ -1,12 +1,8 @@
 import express from 'express';
+import routes from './routes';
 
 const app = express();
 
-app.get('/users', (request, response) => {
-    let { name } = request.query;
-
-    response.json({ success: true, message: `hello TypeScript! Your name is: ${name}` });
-});
-
-
+app.use(express.json());
+app.use(routes);
 app.listen(3333);
