@@ -13,7 +13,7 @@ export default class ItemController {
                 return { id: item.id, title: item.title, image: `http://localhost:3333/uploads/${item.image}` }
             });
         
-            return response.status(201).json(new ListRetrievedResponse(true, 'List of items retrieved successfully', serializedItems));
+            return response.status(200).json(new ListRetrievedResponse(true, 'List of items retrieved successfully', serializedItems));
         } catch (error) {
             return response.status(500).json(new GenericResponse(false, `Something unexpected happened in the server`, error));
         }
