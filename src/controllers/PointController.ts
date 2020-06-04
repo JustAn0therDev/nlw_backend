@@ -36,7 +36,7 @@ export default class PointController {
                 });
             });
 
-            return response.status(200).json(new GenericResponse(true, "Ponto de coleta criado com sucesso"));
+            return response.status(201).json(new GenericResponse(true, "Ponto de coleta criado com sucesso"));
         } catch (error) {
             return response.status(500).json(new GenericResponse(false, 'Something unexpected happened in the server', error.toString()));
         }
@@ -46,7 +46,7 @@ export default class PointController {
         try {
             const points = await knex('points').select('*');
     
-            return response.status(201).json(new ListRetrievedResponse(true, 'List of points retrieved successfully', points));
+            return response.status(200).json(new ListRetrievedResponse(true, 'List of points retrieved successfully', points));
         } catch (error) {
             return response.status(500).json(new GenericResponse(false, `Something unexpected happened in the server`, error));
         }
