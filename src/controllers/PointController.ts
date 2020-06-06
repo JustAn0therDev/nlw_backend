@@ -19,12 +19,8 @@ export default class PointController {
         try {
             const requestedPointToCreate: Point = await request.body;
 
-            const emailAlreadyExistsInTheDatabase = await this.dataAccessValidator.validateRequestedEmail(requestedPointToCreate.email);
+            await this.dataAccessValidator.validateRequestedEmail(requestedPointToCreate.email);
 
-            if (emailAlreadyExistsInTheDatabase) {
-                return response.status(400).json({ success: false, message: "Email ja existe na nossa base de dados." });
-            }
-        
             const arrayOfCreatedIds: Number[] = await this.pointServices.insert(requestedPointToCreate);
     
             request.body.items.forEach(async (id: Number) => {
@@ -35,24 +31,23 @@ export default class PointController {
 
             return response.status(201).json({ success: responseToReturn.success, message: responseToReturn.message, point: requestedPointToCreate });
         } catch (error) {
-            return response.status(500).json(new GenericResponse(false, 'Ocorreu um erro inesperado.', error.toString()));
+            return response.json(new GenericResponse(false, 'Ocorreu um erro.', error.toString()));
         }
     }
 
     async show(request: Request, response: Response) {
-        let genericResponse: GenericResponse;
-        const point_id: Number = Number(request.params.id);
-
-        const point = await this.pointServices.show(point_id);
-
-        if (!point) {
-            genericResponse = new GenericResponse(false, "Ponto não encontrado.");
-            return response.status(404).json(genericResponse)
+        try{
+            let genericResponse: GenericResponse;
+            const point_id: Number = Number(request.params.id);
+    
+            const point = await this.pointServices.show(point_id);
+    
+            genericResponse = new GenericResponse(true, "Ponto encontrado com sucesso.");
+    
+            return response.status(200).json({ success: genericResponse.success, message: genericResponse.message, point });
+        } catch (error) {
+            return response.json(new GenericResponse(false, "Ocorreu um erro", error));
         }
-
-        genericResponse = new GenericResponse(true, "Ponto encontrado com sucesso.");
-
-        return response.status(200).json({ success: genericResponse.success, message: genericResponse.message, point });
     }
 
     async index(request: Request, response: Response) {
@@ -61,7 +56,7 @@ export default class PointController {
     
             return response.status(200).json(new ListRetrievedResponse(true, 'Lista de pontos resgatada com sucesso', points));
         } catch (error) {
-            return response.status(500).json(new GenericResponse(false, 'Ocorreu um erro inesperado', error));
+            return response.status(500).json(new GenericResponse(false, 'Ocorreu um erro', error));
         }
     }
 }

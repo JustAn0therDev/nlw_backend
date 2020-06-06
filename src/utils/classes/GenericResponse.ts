@@ -8,5 +8,6 @@ export default class GenericResponse implements Message {
     constructor(success: boolean, message: string, error: string = "") {
         this.success = success;
         this.message = message;
+        this.error = error;
     }
 }
