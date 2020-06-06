@@ -1,11 +1,10 @@
-export interface Point {
-    id: number;
+export default interface Point {
+    id: Number;
     name: string;
     email: string;
     whatsapp: string;
-    longitude: number;
-    latitude: number;
+    longitude: Number;
+    latitude: Number;
     city: string;
     uf: string;
-    items: number[]
 }

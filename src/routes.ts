@@ -10,6 +10,8 @@ routes.get('/items', async (request, response) => await itemController.index(req
 
 routes.get('/points', async (request, response) => await pointController.index(request, response));
 
+routes.get('/points/:id', async (request, response) => await pointController.show(request, response));
+
 routes.post('/points', async (request, response) => await pointController.create(request, response));
 
 export default routes;

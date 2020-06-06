@@ -1,14 +1,13 @@
 import knex from '../database/connection';
 import DataAccessValidation from '../interfaces/functions/DataAccessValidation';
+import Point from '../interfaces/models/point';
 
 export default class DataAccessValidator {
     validateRequestedEmail: DataAccessValidation = async (requestedEmail: string) => {
-        const arrayOfEmails: string[] = await knex('points').select('email');
+        const arrayOfEmails: Point[] = await knex('points').select('*').where('email', '=', requestedEmail);
 
-        if (arrayOfEmails.find((email: string) => email.toLowerCase() == requestedEmail.toLowerCase())) {
-            return true;
-        }
+        const foundEmail = arrayOfEmails.length > 0;
 
-        return false;
+        return foundEmail;
     }
 }
