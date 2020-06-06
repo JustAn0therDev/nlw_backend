@@ -1,4 +1,4 @@
-import { Router, response } from 'express';
+import { Router } from 'express';
 import ItemController from "./controllers/ItemController";
 import PointController from './controllers/PointController';
 

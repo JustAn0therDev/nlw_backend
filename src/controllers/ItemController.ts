@@ -2,7 +2,7 @@ import knex from '../database/connection';
 import {Request, Response} from 'express';
 import ListRetrievedResponse from '../utils/classes/ListRetrievedResponse';
 import GenericResponse from '../utils/classes/GenericResponse';
-import Item from '../interfaces/Item';
+import Item from '../interfaces/models/Item';
 
 export default class ItemController {
     async index(request: Request, response: Response) {

@@ -1,35 +1,34 @@
 import knex from '../database/connection';
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import ListRetrievedResponse from '../utils/classes/ListRetrievedResponse';
 import GenericResponse from '../utils/classes/GenericResponse';
-import { open } from 'inspector';
-import Knex from 'knex';
-
+import DataAccessValidator from '../validators/DataAccessValidator';
+import { Point } from '../interfaces/models/point';
 export default class PointController {
+
+    private dataAccessValidator = new DataAccessValidator();
+
     async create(request: Request, response: Response) {
         try {
-            const {
-                name,
-                email,
-                whatsapp,
-                latitude,
-                longitude,
-                city,
-                uf,
-                items
-            } = request.body;
+            const requestedPointToCreate: Point = request.body;
+
+            const emailAlreadyExistsInTheDatabase = this.dataAccessValidator.validateRequestedEmail(requestedPointToCreate.email);
+
+            if (emailAlreadyExistsInTheDatabase) {
+                return response.status(400).json({ success: false, message: "Email already exists in the database." });
+            }
         
-            const arrayOfCreatedIds = await knex('points').insert({
-                name,
-                email,
-                whatsapp,
-                latitude,
-                longitude,
-                city,
-                uf
+            const arrayOfCreatedIds: number[] = await knex('points').insert({
+                name: requestedPointToCreate.name,
+                email: requestedPointToCreate.email,
+                whatsapp: requestedPointToCreate.whatsapp,
+                latitude: requestedPointToCreate.latitude,
+                longitude: requestedPointToCreate.longitude,
+                city: requestedPointToCreate.city,
+                uf: requestedPointToCreate.uf
             });
     
-            items.forEach(async (id: number) => {
+            requestedPointToCreate.items.forEach(async (id: number) => {
                 await knex('point_items').insert({
                     item_id: id,
                     point_id: arrayOfCreatedIds[0]
