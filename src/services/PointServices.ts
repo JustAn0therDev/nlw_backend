@@ -16,13 +16,15 @@ export default class PointServices implements PointServicesInterface {
         });
     }
 
-    async show(point_id: Number): Promise<Point> {
+    async show(point_id: Number): Promise<any> {
         const point = await knex('points').select('*').where('id', '=', point_id.toString()).first();
 
         if (!point) 
             throw 'Ponto de coleta especificado nao foi encontrado.';
 
-        return point;
+        const items = await knex('items').join('point_items', 'items.id', '=', 'point_items.item_id').where('point_items.point_id', point_id);
+
+        return { point, items };
     }
 
     async getAllPoints(): Promise<Point[]> {

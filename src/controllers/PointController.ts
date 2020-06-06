@@ -40,11 +40,11 @@ export default class PointController {
             let genericResponse: GenericResponse;
             const point_id: Number = Number(request.params.id);
     
-            const point = await this.pointServices.show(point_id);
+            const pointWithItems = await this.pointServices.show(point_id);
     
             genericResponse = new GenericResponse(true, "Ponto encontrado com sucesso.");
     
-            return response.status(200).json({ success: genericResponse.success, message: genericResponse.message, point });
+            return response.status(200).json({ success: genericResponse.success, message: genericResponse.message, point: pointWithItems });
         } catch (error) {
             return response.json(new GenericResponse(false, "Ocorreu um erro", error));
         }
