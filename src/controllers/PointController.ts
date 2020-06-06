@@ -8,7 +8,7 @@ import IPointServices from '../interfaces/services/pointServices';
 import PointServices from '../services/PointServices';
 
 import IPointItemsServices from '../interfaces/services/pointItemsServices';
-import PointItemsServices from '../services/pointItemsServices';
+import PointItemsServices from '../services/PointItemsServices';
 export default class PointController {
 
     private dataAccessValidator: DataAccessValidator = new DataAccessValidator();
@@ -52,7 +52,9 @@ export default class PointController {
 
     async index(request: Request, response: Response) {
         try {
-            const points = await this.pointServices.getAllPoints();
+            const { city, uf, items } = request.query;
+
+            const points = await this.pointServices.getAllPoints(city, uf, items);
     
             return response.status(200).json(new ListRetrievedResponse(true, 'Lista de pontos resgatada com sucesso', points));
         } catch (error) {

@@ -1,3 +1,3 @@
 export default interface DataAccessValidation {
-    (requestedEmail: string): Promise<void>;
+    (requestedEmail: String): Promise<void>;
 }

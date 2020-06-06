@@ -1,9 +1,9 @@
 export default class ListRetrievedResponse {
     success: boolean;
-    message: string;
+    message: String;
     collection: any[]
 
-    constructor(success: boolean, message: string, collection: any[]) {
+    constructor(success: boolean, message: String, collection: any[]) {
         this.success = success;
         this.message = message;
         this.collection = collection;

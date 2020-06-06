@@ -3,7 +3,7 @@ import DataAccessValidation from '../interfaces/functions/DataAccessValidation';
 import Point from '../interfaces/models/point';
 
 export default class DataAccessValidator {
-    validateRequestedEmail: DataAccessValidation = async (requestedEmail: string) => {
+    validateRequestedEmail: DataAccessValidation = async (requestedEmail: String) => {
         const arrayOfEmails: Point[] = await knex('points').select('*').where('email', '=', requestedEmail);
 
         if (arrayOfEmails.length > 0)

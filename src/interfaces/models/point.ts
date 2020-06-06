@@ -1,10 +1,10 @@
 export default interface Point {
     id: Number;
-    name: string;
-    email: string;
-    whatsapp: string;
+    name: String;
+    email: String;
+    whatsapp: String;
     longitude: Number;
     latitude: Number;
-    city: string;
-    uf: string;
+    city: String;
+    uf: String;
 }
