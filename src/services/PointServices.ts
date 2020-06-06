@@ -33,23 +33,16 @@ export default class PointServices implements PointServicesInterface {
     async getAllPoints(city: any, uf: any, items: any): Promise<Point[]> {
         var filteredPoints: Point[] = [];
 
+        filteredPoints = await knex('points').select('*');
+
         const itemsInArray: Number[] = items ? items.split(',').map((item: String) => Number(item.trim())) : [];
 
-        filteredPoints = await knex('points').select('*');
-        // .join('point_items', 'points.id', 'point_items.point_id')
-        // .whereIn('point_items.item_id', itemsInArray)
-        // .where('city', city)
-        // .where('uf', uf)
-        // .distinct()
-        // .select('points.*');
-
-        if (city) {
-            filteredPoints = filteredPoints.filter(item => item.city == city);
-        }
-
-        if (uf) {
-            filteredPoints = filteredPoints.filter(item => item.uf == uf);
-        }
+        filteredPoints = await knex('points').join('point_items', 'points.id', '=', 'point_items.point_id')
+        .whereIn('point_items.item_id', itemsInArray)
+        .where('city', String(city))
+        .where('uf', String(uf))
+        .distinct()
+        .select('points.*');
 
         return filteredPoints;
     }
